@@ -13,10 +13,63 @@ f.close()
 duplicates = []  # Return the list of duplicates in this data structure
 
 # Replace the nested for loops below with your improvements
-for name_1 in names_1:
-    for name_2 in names_2:
-        if name_1 == name_2:
-            duplicates.append(name_1)
+# for name_1 in names_1:
+#     for name_2 in names_2:
+#         if name_1 == name_2:
+#             duplicates.append(name_1)
+class BSTNode:
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+        self.length = 0
+
+    def insert(self, value):
+        current_node = self
+        while current_node is not None:
+            if value < current_node.value:
+                if current_node.left is None:
+                    current_node.left = BSTNode(value)
+                    current_node.length += 1
+                    return
+                else:
+                    current_node = current_node.left
+            else:
+                if current_node.right is None:
+                    current_node.right = BSTNode(value)
+                    current_node.length += 1
+                    return
+                else:
+                    current_node = current_node.right
+
+    # Return True if the tree contains the value
+    # False if it does not
+    def contains(self, target):
+        current_node = self
+        while current_node is not None:
+            if target < current_node.value:
+                if current_node.left is None:
+                    return False
+                else:
+                    current_node = current_node.left
+            elif target > current_node.value:
+                if current_node.right is None:
+                    return False
+                else:
+                    current_node = current_node.right
+            else:
+                return True
+
+all_names = None
+for name in names_1:
+    if all_names is None:
+        all_names = BSTNode(name)
+    else:
+        all_names.insert(name)
+
+for name in names_2:
+    if all_names.contains(name):
+        duplicates.append(name)
 
 end_time = time.time()
 print (f"{len(duplicates)} duplicates:\n\n{', '.join(duplicates)}\n\n")
